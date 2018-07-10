@@ -5,6 +5,14 @@ const bodyParser = require("body-parser");
 const index = require("./routes/index");
 const books = require("./routes/books");
 
+const mongoose = require("mongoose");
+mongoose.connect("mongodb://localhost/mongoose-playground");
+
+const db = mongoose.connection;
+db.on("error", error => {
+  console.error("An error occurred!", error);
+});
+
 const app = express();
 
 app.use(logger("dev"));
