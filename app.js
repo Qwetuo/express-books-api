@@ -4,10 +4,11 @@ const bodyParser = require("body-parser");
 
 const index = require("./routes/index");
 const books = require("./routes/books");
-const authors = require("./routes/authors");
+const authorsRouter = require("./routes/authors");
+const mongodb_uri = process.env.MONGODB_URI || "mongodb://localhost/express-books-api"
 
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/express-books-api");
+mongoose.connect(mongodb_uri);
 
 const db = mongoose.connection;
 db.on("error", error => {
@@ -22,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use("/", index);
 app.use("/books", books);
-app.use("/authors", authors)
+authorsRouter(app)
 
 app.use(function(err, req,res,next) {
   if (typeof err === 'string'){
